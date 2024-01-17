@@ -21,7 +21,7 @@ def utf8_to_binary(text):
 
     return binary_representation.strip()
 
-cyndaquils = ["Samantha Briasco-Stewart", "Cyndaquil", "weewow", "Samantha"]
+cyndaquils = ["SimpForSam", "SimpforSam", "Samantha Briasco-Stewart", "Cyndaquil", "weewow", "Samantha"]
 #cyndaquil = "Samantha Briasco-Stewart"
 for cyndaquil in cyndaquils:
     binary_cyndaquil = utf8_to_binary(cyndaquil)
