@@ -3,7 +3,10 @@ import time
 import sys
 import random
 
-
+# Define some mersenne primes and some useless non-prime integers
+A_LARGE_USELESS_INT = sys.maxsize // 69696696969699
+mersenne_primes = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209, 44497, 86243, 110503, 132049, 216091, 756839, 859433, 1257787, 1398269, 2976221, 3021377, 6972593, 13466917, 20996011, 24036583, 25964951, 30402457]
+not_merseene = [69, 69696696969699, A_LARGE_USELESS_INT]
 
 class EllipticCurve:
     """
@@ -52,7 +55,7 @@ class EllipticCurve:
         return result
 
 
-# def is_prime(n):
+# def is_prime(n): # Using elliptical curve cryptography
 #     """
 #     Simple primality test using elliptic curves.
 #     """
@@ -71,12 +74,17 @@ class EllipticCurve:
 #     if not curve.is_on_curve(point):
 #         return False
     
+def is_prime(n): # Using Newton's method; log(n) convergence to is_prime faster than stupid baseline method
+    """
+    The only change from the stupid baseline method is how fast it converts for the max_divisor + 1 search reduce
+    Newton's Method converges at log(n) faster than the stupid method
+    """
+    pass # to implement
 
-A_LARGE_USELESS_INT = sys.maxsize // 69696696969699
-mersenne_primes = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209, 44497, 86243, 110503, 132049, 216091, 756839, 859433, 1257787, 1398269, 2976221, 3021377, 6972593, 13466917, 20996011, 24036583, 25964951, 30402457]
-not_merseene = [69, 69696696969699, A_LARGE_USELESS_INT]
-
-def is_prime(n):
+def is_prime(n): # Using stupid baseline method method
+    """
+    Stupid baseline method that reduces search space by a factor of 1/2 every iteration
+    """
     if n <= 1:
         return False
     if n <= 3:
@@ -91,21 +99,20 @@ def is_prime(n):
     return True
 
 def is_mersenne_prime(p):
+    """
+    Calculates the Mersenne number for the given p which is a Mersenne Prime or NOT
+    Then loops some s = 4, for _ in range(p - 2): s = (s ** 2 - 2) % mersenne_number, return True when s = (s ** 2 - 2) % mersenne_number == 0; else returns False
+    """
     if not is_prime(p):
         return False
-
     mersenne_number = 2 ** p - 1
     s = 4
     for _ in range(p - 2):
         s = (s ** 2 - 2) % mersenne_number
-
     return s == 0
 
-
 if __name__ == "__main__":
-# Example usage
-#p = 2203# 82589933
-    for p in mersenne_primes:#not_merseene:
+    for p in mersenne_primes: # not_merseene:
         start_time = time.time()
         print(f"Is 2^{p} - 1 a Mersenne prime? {is_mersenne_prime(p)}")
         end_time = time.time()
