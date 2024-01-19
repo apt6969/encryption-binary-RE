@@ -73,17 +73,42 @@ class EllipticCurve:
 #     point = (x, y)
 #     if not curve.is_on_curve(point):
 #         return False
-    
-def is_prime(n): # Using Newton's method; log(n) convergence to is_prime faster than stupid baseline method
-    """
-    The only change from the stupid baseline method is how fast it converts for the max_divisor + 1 search reduce
-    Newton's Method converges at log(n) faster than the stupid method
-    """
-    pass # to implement
 
-def is_prime(n): # Using stupid baseline method method
+
+# def is_prime(n): # Explicitly declares Newton's Method with limit to iterations; possible minor speed ups
+#     """
+#     The only change from the stupid baseline method is how fast it converts for the max_divisor + 1 search reduce
+#     Newton's Method converges at log(n) faster than the stupid method
+#     """
+#     if n < 2:
+#         return False
+#     if n in (2, 3):
+#         return True
+#     if n % 2 == 0:
+#         return False
+
+#     def f(x):
+#         return x**2 - n
+
+#     def df(x):
+#         return 2 * x
+
+#     # Optimized initial guess (approximate square root of n)
+#     x = n // 2
+#     for _ in range(20):  # Limiting iterations to 20
+#         next_x = x - f(x) / df(x)
+#         if abs(next_x - x) < 1:
+#             x = int(next_x)
+#             break
+#         x = next_x
+
+#     # Check for integer square root
+#     return x * x != n
+
+
+def is_prime(n): # Slow method using Newton's Method by importing math.isqrt()?
     """
-    Stupid baseline method that reduces search space by a factor of 1/2 every iteration
+    Baseline method?
     """
     if n <= 1:
         return False
@@ -91,8 +116,7 @@ def is_prime(n): # Using stupid baseline method method
         return True
     if n % 2 == 0:
         return False
-    
-    max_divisor = math.isqrt(n)
+    max_divisor = math.isqrt(n) # This already implements Newton's Method for calculating floor of sqrt of integers
     for d in range(3, max_divisor + 1, 2):
         if n % d == 0:
             return False
