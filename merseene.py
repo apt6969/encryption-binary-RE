@@ -104,7 +104,17 @@ class EllipticCurve:
 
 #     # Check for integer square root
 #     return x * x != n
-
+    
+def newton_sqrt_floor(n):
+    if n == 0 or n == 1:
+        return n
+    guess = n // 2
+    while True:
+        new_guess = (guess + n // guess) // 2
+        if new_guess == guess:
+            break
+        guess = new_guess
+    return guess
 
 def is_prime(n): # Slow method using Newton's Method by importing math.isqrt()?
     """
@@ -116,7 +126,7 @@ def is_prime(n): # Slow method using Newton's Method by importing math.isqrt()?
         return True
     if n % 2 == 0:
         return False
-    max_divisor = math.isqrt(n) # This already implements Newton's Method for calculating floor of sqrt of integers
+    max_divisor = newton_sqrt_floor(n) # This already implements Newton's Method for calculating floor of sqrt of integers
     for d in range(3, max_divisor + 1, 2):
         if n % d == 0:
             return False
