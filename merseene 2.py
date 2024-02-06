@@ -5,8 +5,7 @@ import random
 
 # Define some mersenne primes and some useless non-prime integers
 A_LARGE_USELESS_INT = sys.maxsize // 69696696969699
-BIT_1024_INT = 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137211
-mersenne_primes = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209, 44497, 86243, 110503, 132049, 216091, 756839, 859433, 1257787, 1398269, 2976221, 3021377, 6972593, 13466917, 20996011, 24036583, 25964951, 30402457]
+mersenne_primes = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209, 44497, 86243, 110503, 132049, 216091, 756839, 859433, 1257787, 1398269, 2976221, 3021377, 6972593, 13466917, 20996011, 24036583, 25964951, 30402457, 82589933]
 not_merseene = [69, 69696696969699, A_LARGE_USELESS_INT]
 
 class EllipticCurve:
@@ -56,28 +55,24 @@ class EllipticCurve:
         return result
 
 
-def is_prime(n): # Using elliptical curve cryptography
-    """
-    Simple primality test using elliptic curves.
-    """
-    if n <= 1:
-        print("line 63")
-        return False
+# def is_prime(n): # Using elliptical curve cryptography
+#     """
+#     Simple primality test using elliptic curves.
+#     """
+#     if n <= 1:
+#         return False
 
-    # Choose random elliptic curve parameters
-    a = random.randrange(0, n)
-    b = random.randrange(0, n)
-    curve = EllipticCurve(a, b, n)
+#     # Choose random elliptic curve parameters
+#     a = random.randrange(0, n)
+#     b = random.randrange(0, n)
+#     curve = EllipticCurve(a, b, n)
 
-    # Choose a random point on the curve
-    x = random.randrange(0, n)
-    y = random.randrange(0, n)
-    point = (x, y)
-    if not curve.is_on_curve(point):
-        return False
-    else:
-        print(f"PRIME!{n}")
-        sys.exit()
+#     # Choose a random point on the curve
+#     x = random.randrange(0, n)
+#     y = random.randrange(0, n)
+#     point = (x, y)
+#     if not curve.is_on_curve(point):
+#         return False
 
 
 # def is_prime(n): # Explicitly declares Newton's Method with limit to iterations; possible minor speed ups
@@ -121,21 +116,21 @@ def newton_sqrt_floor(n):
         guess = new_guess
     return guess
 
-# def is_prime(n): # Slow method using Newton's Method by importing math.isqrt()?
-#     """
-#     Baseline method?
-#     """
-#     if n <= 1:
-#         return False
-#     if n <= 3:
-#         return True
-#     if n % 2 == 0:
-#         return False
-#     max_divisor = newton_sqrt_floor(n) # This already implements Newton's Method for calculating floor of sqrt of integers
-#     for d in range(3, max_divisor + 1, 2):
-#         if n % d == 0:
-#             return False
-#     return True
+def is_prime(n): # Slow method using Newton's Method by importing math.isqrt()?
+    """
+    Baseline method?
+    """
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0:
+        return False
+    max_divisor = newton_sqrt_floor(n) # This already implements Newton's Method for calculating floor of sqrt of integers
+    for d in range(3, max_divisor + 1, 2):
+        if n % d == 0:
+            return False
+    return True
 
 def is_mersenne_prime(p):
     """
@@ -143,11 +138,7 @@ def is_mersenne_prime(p):
     Then loops some s = 4, for _ in range(p - 2): s = (s ** 2 - 2) % mersenne_number, return True when s = (s ** 2 - 2) % mersenne_number == 0; else returns False
     """
     if not is_prime(p):
-        print("line 142 not prime")
         return False
-    else:
-        print(f"Prime! {p}")
-        sys.exit()
     mersenne_number = 2 ** p - 1
     s = 4
     for _ in range(p - 2):
@@ -155,16 +146,9 @@ def is_mersenne_prime(p):
     return s == 0
 
 if __name__ == "__main__":
-    #for p in BIT_1024_INT : #mersenne_primes: # not_merseene:
-    start_time = time.time()
-    LARGE_INT = BIT_1024_INT - 1000000000000
-    BIT_1024_INT_LIST = []
-    for _ in range(1000000000000):
-        BIT_1024_INT_LIST.append(LARGE_INT)
-        LARGE_INT+=1
-    for p in BIT_1024_INT_LIST:
-        is_prime(p)
-        #print(f"Is 2^{p} - 1 a Mersenne prime? {is_mersenne_prime(p)}")
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Elapsed Time: {elapsed_time} seconds")
+    for p in mersenne_primes: # not_merseene:
+        start_time = time.time()
+        print(f"Is 2^{p} - 1 a Mersenne prime? {is_mersenne_prime(p)}")
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print(f"Elapsed Time: {elapsed_time} seconds")
